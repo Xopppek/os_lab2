@@ -1,6 +1,12 @@
 CFLAGS=-Wall
 
-main: main.o b.o
+all: a b
+
+a: a.c
+	gcc -o a a.c
+
+b: b.c
+	gcc -o b b.c
 
 clean:
-	rm -f *.o main
+	rm -f a b

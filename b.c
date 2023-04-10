@@ -2,9 +2,12 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdlib.h>
-int b(){
+#include <signal.h>
+int main(){
 	char input[100];
 	fgets(input, 100, stdin);
+	kill(getppid(), SIGUSR1);
+	printf("b sent signal to %d\n", getppid());
 	system(input);
-	return 0;
+	exit(0);
 } 
