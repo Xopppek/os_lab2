@@ -4,10 +4,10 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-int flag = 0;
+int got_signal = 0;
 
 void signal_handler(int sig){
-	flag = 1;
+	got_signal = 1;
 }
 
 int main(){
@@ -25,19 +25,19 @@ int main(){
 	else{
 //		kill(id, SIGUSR1);
 		printf("program A is waiting for signal\n");
-		while (!flag){
+		while (!got_signal){
 			sleep(1);
 		}
 		printf("got signal\n");
 		sleep(n);
 	//	kill(id, SIGTERM);
 		pid_t child_pid;
-/*		do {
+		do {
 			child_pid = waitpid(-1, NULL, WNOHANG);
 			if(child_pid > 0){
 				kill(child_pid, SIGTERM);
 			}
-		} while (child_pid != 0);i*/
+		} while (child_pid != 0);
 		printf("prigram b stopped\n");	
 //		wait(NULL);
 	//	printf("%d\n", getpid());

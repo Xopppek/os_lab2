@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>
+#include <sys/wait.h>
 
 #define MAX_ARGS 20
 #define MAX_PROGS 10
@@ -11,12 +12,6 @@
 #define MAX_PROG_LENGTH 50
 #define INPUT_SIZE 1024 
 int main(){ 
-/*	char input[100];
-	fgets(input, 100, stdin);
-	kill(getppid(), SIGUSR1);
-	printf("b sent signal to %d\n", getppid());
-	system(input);*/
-	
 	char input[INPUT_SIZE];
 	char args[MAX_PROGS][MAX_ARGS][MAX_ARG_LENGTH];
 	char programs[MAX_PROGS][MAX_PROG_LENGTH];
@@ -31,7 +26,7 @@ int main(){
 	int num_args[MAX_PROGS] = {0};
 	int i = 0, j = 0;
 
-	token = strtok(input, " ");
+	token = strtok(input, " \n");
 	int is_name = 1;
 	while(token != NULL){
 		if(strcmp(token, "|") == 0){
@@ -49,8 +44,10 @@ int main(){
 		}
 		token = strtok(NULL, " \n");
 	}
+
+//	kill(SIGUSR1, getppid());
 //=========Printing parsed info for testing=======//	
-	printf("Names: ");
+/*	printf("Names: ");
 	for (i = 0; i < num_programs; i++)
 		printf("%s, ", programs[i]);
 	printf("\n");
@@ -59,14 +56,8 @@ int main(){
 		for (j = 0; j < num_args[i]; j++)
 			printf("%s, ", args[i][j]);
 		printf("\n");
-	}
-	/*char* temp[num_args[0]+1];
-	for (i = 0; i < num_args[0]; i++)
-		temp[i] = args[0][i];
-	temp[num_args[0]] = NULL;
-	execvp(programs[0], temp);*/
-
-//========Creating child processes=============//
+	}*/
+//============Creating child processes=============//
 	pid_t pid;
 	int num_pipes = num_programs * 2 + 2;
 	int fd[num_pipes * 2];
@@ -99,7 +90,7 @@ int main(){
 				temp[j] = args[i][j];
 			temp[num_args[i]] = NULL;
 			if(execvp(programs[i], temp)){
-				perror("axecvp error");
+				perror("execvp error");
 				exit(1);
 			}
 		}else if (pid < 0){
