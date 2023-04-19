@@ -45,7 +45,8 @@ int main(){
 		token = strtok(NULL, " \n");
 	}
 
-//	kill(SIGUSR1, getppid());
+	kill(getppid(), SIGUSR1);
+	printf("B sent signal\n");
 //=========Printing parsed info for testing=======//	
 /*	printf("Names: ");
 	for (i = 0; i < num_programs; i++)
