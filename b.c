@@ -102,7 +102,8 @@ int main(){
 
 	for(i = 0; i < 2 * num_pipes; i++)
 		close(fd[i]);
-	wait(NULL);
+	for(i = 0; i < num_programs; i++)
+		wait(NULL);
 
 	exit(0);
 } 
