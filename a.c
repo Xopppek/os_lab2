@@ -7,6 +7,7 @@
 
 
 void signal_handler(int sig){
+	printf("A got signal\n");
 }
 
 int main(){
@@ -21,7 +22,6 @@ int main(){
 	}
 	printf("program A is waiting for signal\n");
 	pause();
-	printf("A got signal\n");
 	sleep(n);
 	if (waitpid(id, NULL, WNOHANG) == 0){
 		printf("Program B did not finish within %d seconds\nTeminating B and subprograms...\n", n);
