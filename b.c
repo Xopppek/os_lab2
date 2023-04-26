@@ -74,14 +74,14 @@ int main(){
 		if(pid == 0){
 			if (i != num_programs-1){
 				if(dup2(fd[i * 2 + 1], STDOUT_FILENO) < 0){
-					perror("dup2 in middle OUTPUT error");
+					perror("dup2 OUTPUT error");
 					exit(1);
 				}
 			}
 
 			if(i != 0){
 				if(dup2(fd[i*2-2], STDIN_FILENO) < 0)
-					perror("dup2 in middle INPUT error");
+					perror("dup2 INPUT error");
 			}
 
 			for(j=0; j < 2*num_pipes; j++)
