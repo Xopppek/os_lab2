@@ -65,7 +65,7 @@ int main(){
 	for(i = 0; i < num_pipes; i++){
 		if(pipe(fd + 2 * i) < 0){
 			perror("pipe error");
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 	}
 
@@ -75,13 +75,15 @@ int main(){
 			if (i != num_programs-1){
 				if(dup2(fd[i * 2 + 1], STDOUT_FILENO) < 0){
 					perror("dup2 OUTPUT error");
-					exit(1);
+					exit(EXIT_FAILURE);
 				}
 			}
 
 			if(i != 0){
-				if(dup2(fd[i*2-2], STDIN_FILENO) < 0)
+				if(dup2(fd[i*2-2], STDIN_FILENO) < 0){
 					perror("dup2 INPUT error");
+					exit(EXIT_FAILURE);
+				}
 			}
 
 			for(j=0; j < 2*num_pipes; j++)
@@ -92,11 +94,11 @@ int main(){
 			temp[num_args[i]] = NULL;
 			if(execvp(programs[i], temp)){
 				perror("execvp error");
-				exit(1);
+				exit(EXIT_FAILURE);
 			}
 		}else if (pid < 0){
 			perror("fork error");
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 	}
 
@@ -105,5 +107,5 @@ int main(){
 	for(i = 0; i < num_programs; i++)
 		wait(NULL);
 
-	exit(0);
+	exit(EXIT_SUCCESS);
 } 
