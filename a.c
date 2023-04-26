@@ -5,9 +5,11 @@
 #include <signal.h>
 #include <stdlib.h>
 
+int is_waiting = 1;
 
 void signal_handler(int sig){
 	printf("A got signal\n");
+	is_waiting = 0;
 }
 
 int main(){
@@ -21,7 +23,9 @@ int main(){
 		exit(1);
 	}
 	printf("program A is waiting for signal\n");
-	pause();
+	//pause();
+	while (is_waiting)
+		sleep(0);
 	sleep(n);
 	if (waitpid(id, NULL, WNOHANG) == 0){
 		printf("Program B did not finish within %d seconds\nTeminating B and subprograms...\n", n);
