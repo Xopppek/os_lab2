@@ -4,14 +4,15 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define SECONDS_TO_TERMINATE 3
 
-int is_waiting = 1;
+bool is_waiting = true;
 
 void signal_handler(int sig){
 	printf("A got signal\n");
-	is_waiting = 0;
+	is_waiting = false;
 }
 
 int main(){
